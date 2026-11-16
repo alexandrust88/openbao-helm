@@ -26,6 +26,7 @@ Kubernetes: `>= 1.30.0-0`
 |-----|------|---------|-------------|
 | csi.agent.enabled | bool | `true` |  |
 | csi.agent.extraArgs | list | `[]` |  |
+| csi.agent.image.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | csi.agent.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for agent image. if tag is "latest", set to "Always" |
 | csi.agent.image.registry | string | `"quay.io"` | image registry to use for agent image |
 | csi.agent.image.repository | string | `"openbao/openbao"` | image repo to use for agent image |
@@ -46,6 +47,7 @@ Kubernetes: `>= 1.30.0-0`
 | csi.enabled | bool | `false` | True if you want to install an openbao-csi-provider daemonset.  Requires installing the secrets-store-csi-driver separately, see: https://secrets-store-csi-driver.sigs.k8s.io/getting-started/installation  With the driver and provider installed, you can mount OpenBao secrets into volumes similar to the OpenBao Agent injector, and you can also sync those secrets into Kubernetes secrets. |
 | csi.extraArgs | list | `[]` |  |
 | csi.hmacSecretName | string | `""` |  |
+| csi.image.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | csi.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for csi image. if tag is "latest", set to "Always" |
 | csi.image.registry | string | `"quay.io"` | image registry to use for csi image |
 | csi.image.repository | string | `"openbao/openbao-csi-provider"` | image repo to use for csi image |
@@ -89,7 +91,8 @@ Kubernetes: `>= 1.30.0-0`
 | injector.agentDefaults.template | string | `"map"` |  |
 | injector.agentDefaults.templateConfig.exitOnRetryFailure | bool | `true` |  |
 | injector.agentDefaults.templateConfig.staticSecretRenderInterval | string | `""` |  |
-| injector.agentImage | object | `{"pullPolicy":"IfNotPresent","registry":"quay.io","repository":"openbao/openbao","tag":""}` | agentImage sets the repo and tag of the OpenBao image to use for the OpenBao Agent containers.  This should be set to the official OpenBao image.  OpenBao 1.3.1+ is required. |
+| injector.agentImage | object | `{"digest":"","pullPolicy":"IfNotPresent","registry":"quay.io","repository":"openbao/openbao","tag":""}` | agentImage sets the repo and tag of the OpenBao image to use for the OpenBao Agent containers.  This should be set to the official OpenBao image.  OpenBao 1.3.1+ is required. |
+| injector.agentImage.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | injector.agentImage.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for agent image. if tag is "latest", set to "Always" |
 | injector.agentImage.registry | string | `"quay.io"` | image registry to use for agent image |
 | injector.agentImage.repository | string | `"openbao/openbao"` | image repo to use for agent image |
@@ -107,6 +110,7 @@ Kubernetes: `>= 1.30.0-0`
 | injector.extraLabels | object | `{}` |  |
 | injector.failurePolicy | string | `"Ignore"` |  |
 | injector.hostNetwork | bool | `false` |  |
+| injector.image.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | injector.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for k8s image. if tag is "latest", set to "Always" |
 | injector.image.registry | string | `"docker.io"` | image registry to use for k8s image |
 | injector.image.repository | string | `"hashicorp/vault-k8s"` | image repo to use for k8s image |
@@ -222,6 +226,7 @@ Kubernetes: `>= 1.30.0-0`
 | server.ha.replicas | int | `3` |  |
 | server.hostAliases | list | `[]` |  |
 | server.hostNetwork | bool | `false` |  |
+| server.image.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | server.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for server image. if tag is "latest", set to "Always" |
 | server.image.registry | string | `"quay.io"` | image registry to use for server image |
 | server.image.repository | string | `"openbao/openbao"` | image repo to use for server image |
@@ -352,6 +357,7 @@ Kubernetes: `>= 1.30.0-0`
 | snapshotAgent.extraSecretEnvironmentVars | list | `[]` | List of extra environment variables to set in the snapshot-agent cronjob These variables take value from existing Secret objects. |
 | snapshotAgent.extraVolumeMounts | list | `[]` | List of additional volumeMounts for the snapshot cronjob container. |
 | snapshotAgent.extraVolumes | list | `[]` | List of extraVolumes made available to the snapshot cronjob container. |
+| snapshotAgent.image.digest | string | `""` | Optional sha256 digest. Empty preserves the tag reference. |
 | snapshotAgent.image.registry | string | `""` | Optional registry override. Empty preserves the registry in repository. |
 | snapshotAgent.image.repository | string | `"ghcr.io/openbao/openbao-snapshot-agent"` |  |
 | snapshotAgent.image.tag | string | `"0.4.5"` |  |
