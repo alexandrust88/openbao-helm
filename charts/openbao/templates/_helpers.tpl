@@ -1397,5 +1397,15 @@ registry; preserve them unless an explicit registry override is provided.
   {{- $reference = printf "%s/%s" $registry $repository -}}
 {{- end -}}
 {{- $tag := default .defaultTag $image.tag -}}
-{{- printf "%s:%s" $reference $tag -}}
+{{- $digest := default "" $image.digest -}}
+{{- if and $digest (contains "@" $tag) -}}
+  {{- fail "image.tag must not contain @ when image.digest is set" -}}
+{{- end -}}
+{{- if or $tag (not $digest) -}}
+  {{- $reference = printf "%s:%s" $reference $tag -}}
+{{- end -}}
+{{- if $digest -}}
+  {{- $reference = printf "%s@%s" $reference $digest -}}
+{{- end -}}
+{{- $reference -}}
 {{- end -}}
