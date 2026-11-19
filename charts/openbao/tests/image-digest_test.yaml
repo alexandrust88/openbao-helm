@@ -1,0 +1,102 @@
+suite: OpenBao Image Digest Test
+templates:
+  - templates/server-statefulset.yaml
+  - templates/tests/server-test.yaml
+  - templates/injector-deployment.yaml
+  - templates/csi-daemonset.yaml
+  - templates/snapshotagent-cronjob.yaml
+tests:
+  - it: server.image at server-statefulset.yaml
+    template: templates/server-statefulset.yaml
+    set:
+      server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: server.image at tests/server-test.yaml
+    template: templates/tests/server-test.yaml
+    set:
+      server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.containers[0].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: injector.image at injector-deployment.yaml
+    template: templates/injector-deployment.yaml
+    set:
+      injector.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: injector.agentImage at injector-deployment.yaml
+    template: templates/injector-deployment.yaml
+    set:
+      injector.agentImage.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].env[?(@.name == "AGENT_INJECT_VAULT_IMAGE")].value
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: csi.image at csi-daemonset.yaml
+    template: templates/csi-daemonset.yaml
+    set:
+      csi.enabled: true
+      csi.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[0].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: csi.agent.image at csi-daemonset.yaml
+    template: templates/csi-daemonset.yaml
+    set:
+      csi.enabled: true
+      csi.agent.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.template.spec.containers[1].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: snapshotAgent.image at snapshotagent-cronjob.yaml
+    template: templates/snapshotagent-cronjob.yaml
+    set:
+      snapshotAgent.enabled: true
+      snapshotAgent.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - matchRegex:
+          path: spec.jobTemplate.spec.template.spec.containers[0].image
+          pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
+  - it: default tag with digest
+    template: templates/server-statefulset.yaml
+    set:
+      server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: quay.io/openbao/openbao:2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  - it: digest only
+    template: templates/snapshotagent-cronjob.yaml
+    set:
+      snapshotAgent.enabled: true
+      snapshotAgent.image.tag: ''
+      snapshotAgent.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].image
+          value: ghcr.io/openbao/openbao-snapshot-agent@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  - it: legacy tag unchanged
+    template: templates/server-statefulset.yaml
+    set:
+      server.image.tag: 2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: quay.io/openbao/openbao:2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  - it: global registry composed
+    template: templates/server-statefulset.yaml
+    set:
+      global.imageRegistry: mirror.example/project
+      server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: mirror.example/project/openbao/openbao:2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
