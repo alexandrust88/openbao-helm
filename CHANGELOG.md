@@ -1,5 +1,7 @@
 ## Unreleased
 
+- feat(telemetry): expose ServiceMonitor target and metric relabeling lists.
+
 ## 0.30.7
 
 - feat: Add trafficDistribution support to all services
