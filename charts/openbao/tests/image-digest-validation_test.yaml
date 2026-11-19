@@ -1,0 +1,155 @@
+suite: OpenBao Image Digest Validation Test
+templates:
+  - templates/server-statefulset.yaml
+tests:
+  - it: server.image rejects short SHA-256 digests
+    set:
+      server.image.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: server[./]image[./]digest
+  - it: server.image rejects unsupported algorithm digests
+    set:
+      server.image.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: server[./]image[./]digest
+  - it: server.image rejects uppercase SHA-256 digests
+    set:
+      server.image.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: server[./]image[./]digest
+  - it: server.image rejects missing algorithm digests
+    set:
+      server.image.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: server[./]image[./]digest
+  - it: injector.image rejects short SHA-256 digests
+    set:
+      injector.image.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]image[./]digest
+  - it: injector.image rejects unsupported algorithm digests
+    set:
+      injector.image.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]image[./]digest
+  - it: injector.image rejects uppercase SHA-256 digests
+    set:
+      injector.image.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]image[./]digest
+  - it: injector.image rejects missing algorithm digests
+    set:
+      injector.image.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]image[./]digest
+  - it: injector.agentImage rejects short SHA-256 digests
+    set:
+      injector.agentImage.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]agentImage[./]digest
+  - it: injector.agentImage rejects unsupported algorithm digests
+    set:
+      injector.agentImage.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]agentImage[./]digest
+  - it: injector.agentImage rejects uppercase SHA-256 digests
+    set:
+      injector.agentImage.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]agentImage[./]digest
+  - it: injector.agentImage rejects missing algorithm digests
+    set:
+      injector.agentImage.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: injector[./]agentImage[./]digest
+  - it: csi.image rejects short SHA-256 digests
+    set:
+      csi.image.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]image[./]digest
+  - it: csi.image rejects unsupported algorithm digests
+    set:
+      csi.image.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]image[./]digest
+  - it: csi.image rejects uppercase SHA-256 digests
+    set:
+      csi.image.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]image[./]digest
+  - it: csi.image rejects missing algorithm digests
+    set:
+      csi.image.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]image[./]digest
+  - it: csi.agent.image rejects short SHA-256 digests
+    set:
+      csi.agent.image.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]agent[./]image[./]digest
+  - it: csi.agent.image rejects unsupported algorithm digests
+    set:
+      csi.agent.image.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]agent[./]image[./]digest
+  - it: csi.agent.image rejects uppercase SHA-256 digests
+    set:
+      csi.agent.image.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]agent[./]image[./]digest
+  - it: csi.agent.image rejects missing algorithm digests
+    set:
+      csi.agent.image.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: csi[./]agent[./]image[./]digest
+  - it: snapshotAgent.image rejects short SHA-256 digests
+    set:
+      snapshotAgent.image.digest: sha256:abc
+    asserts:
+      - failedTemplate:
+          errorPattern: snapshotAgent[./]image[./]digest
+  - it: snapshotAgent.image rejects unsupported algorithm digests
+    set:
+      snapshotAgent.image.digest: md5:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: snapshotAgent[./]image[./]digest
+  - it: snapshotAgent.image rejects uppercase SHA-256 digests
+    set:
+      snapshotAgent.image.digest: sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    asserts:
+      - failedTemplate:
+          errorPattern: snapshotAgent[./]image[./]digest
+  - it: snapshotAgent.image rejects missing algorithm digests
+    set:
+      snapshotAgent.image.digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: snapshotAgent[./]image[./]digest
+  - it: duplicate digest rejected
+    set:
+      server.image.tag: 2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    asserts:
+      - failedTemplate:
+          errorPattern: image.tag must not contain @ when image.digest is set

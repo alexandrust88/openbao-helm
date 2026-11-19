@@ -1,5 +1,9 @@
 ## Unreleased
 
+- feat(images): support optional sha256 digests for all chart-managed images.
+
+- feat(images): add a global registry override and snapshot-agent registry option, preserving existing references when unset.
+
 ## 0.30.7
 
 - feat: Add trafficDistribution support to all services
