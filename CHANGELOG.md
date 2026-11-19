@@ -1,5 +1,7 @@
 ## Unreleased
 
+- feat(server): expose the optional PodDisruptionBudget unhealthyPodEvictionPolicy.
+
 ## 0.30.7
 
 - feat: Add trafficDistribution support to all services
