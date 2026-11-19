@@ -67,6 +67,8 @@ tests:
           pattern: "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$"
   - it: default tag with digest
     template: templates/server-statefulset.yaml
+    chart:
+      appVersion: v2.7.2
     set:
       server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     asserts:
@@ -93,6 +95,8 @@ tests:
           value: quay.io/openbao/openbao:2.7.2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   - it: global registry composed
     template: templates/server-statefulset.yaml
+    chart:
+      appVersion: v2.7.2
     set:
       global.imageRegistry: mirror.example/project
       server.image.digest: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
