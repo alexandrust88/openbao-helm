@@ -4,6 +4,10 @@
 # Available parameters and their default values for the OpenBao chart.
 
 global:
+  # -- Registry prefix for chart images and map-valued extra container images, overriding
+  # per-image registries. May include a mirror project path.
+  imageRegistry: ""
+
   # -- enabled is the master enabled switch. Setting this to true or false
   # will enable or disable all the components within this chart by default.
   enabled: true
@@ -65,6 +69,8 @@ injector:
     repository: "hashicorp/vault-k8s"
     # -- image tag to use for k8s image
     tag: "1.7.6"
+    # -- image digest. When set, the reference is repository:tag@sha
+    sha: ""
     # -- image pull policy to use for k8s image. if tag is "latest", set to "Always"
     pullPolicy: IfNotPresent
 
@@ -78,6 +84,8 @@ injector:
     repository: "openbao/openbao"
     # -- image tag to use for agent image - defaults to chart appVersion
     tag: ""
+    # -- image digest. When set, the reference is repository:tag@sha
+    sha: ""
     # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
     pullPolicy: IfNotPresent
 
@@ -390,6 +398,8 @@ server:
     repository: "openbao/openbao"
     # -- image tag to use for server image - defaults to chart appVersion
     tag: ""
+    # -- image digest. When set, the reference is repository:tag@sha
+    sha: ""
     # -- image pull policy to use for server image. if tag is "latest", set to "Always"
     pullPolicy: IfNotPresent
 
@@ -1245,6 +1255,8 @@ csi:
     repository: "openbao/openbao-csi-provider"
     # -- image tag to use for csi image
     tag: "2.0.3"
+    # -- image digest. When set, the reference is repository:tag@sha
+    sha: ""
     # -- image pull policy to use for csi image. if tag is "latest", set to "Always"
     pullPolicy: IfNotPresent
 
@@ -1349,6 +1361,8 @@ csi:
       repository: "openbao/openbao"
       # -- image tag to use for agent image - defaults to chart appVersion
       tag: ""
+      # -- image digest. When set, the reference is repository:tag@sha
+      sha: ""
       # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -1579,7 +1593,13 @@ snapshotAgent:
     annotations: {}
   # The image settings for the snapshot agent
   image:
+    # -- image pull policy to use for the snapshot agent
+    pullPolicy: IfNotPresent
+    # -- Optional registry override. Empty preserves the registry in repository.
+    registry: ""
     repository: ghcr.io/openbao/openbao-snapshot-agent
+    # -- image digest. When set, the reference is repository:tag@sha
+    sha: ""
     tag: 0.4.5
 
   # -- List of extraVolumes made available to the snapshot cronjob container.

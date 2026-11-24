@@ -25,6 +25,9 @@
                                 },
                                 "tag": {
                                     "type": "string"
+                                },
+                                "sha": {
+                                    "type": "string"
                                 }
                             }
                         },
@@ -109,6 +112,9 @@
                             "type": "string"
                         },
                         "tag": {
+                            "type": "string"
+                        },
+                        "sha": {
                             "type": "string"
                         }
                     }
@@ -245,6 +251,9 @@
                 },
                 "tlsDisable": {
                     "type": "boolean"
+                },
+                "imageRegistry": {
+                    "type": "string"
                 }
             }
         },
@@ -301,6 +310,9 @@
                             "type": "string"
                         },
                         "tag": {
+                            "type": "string"
+                        },
+                        "sha": {
                             "type": "string"
                         }
                     }
@@ -365,6 +377,9 @@
                             "type": "string"
                         },
                         "tag": {
+                            "type": "string"
+                        },
+                        "sha": {
                             "type": "string"
                         }
                     }
@@ -754,6 +769,9 @@
                             "type": "string"
                         },
                         "tag": {
+                            "type": "string"
+                        },
+                        "sha": {
                             "type": "string"
                         }
                     }
@@ -1186,6 +1204,31 @@
                     "type": [
                         "array"
                     ]
+                }
+            }
+        },
+        "snapshotAgent": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "pullPolicy": {
+                            "type": "string"
+                        },
+                        "registry": {
+                            "type": "string"
+                        },
+                        "repository": {
+                            "type": "string"
+                        },
+                        "sha": {
+                            "type": "string"
+                        },
+                        "tag": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         }

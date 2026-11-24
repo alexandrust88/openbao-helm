@@ -29,6 +29,7 @@ Kubernetes: `>= 1.30.0-0`
 | csi.agent.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for agent image. if tag is "latest", set to "Always" |
 | csi.agent.image.registry | string | `"quay.io"` | image registry to use for agent image |
 | csi.agent.image.repository | string | `"openbao/openbao"` | image repo to use for agent image |
+| csi.agent.image.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | csi.agent.image.tag | string | `""` | image tag to use for agent image - defaults to chart appVersion |
 | csi.agent.logFormat | string | `"standard"` |  |
 | csi.agent.logLevel | string | `"info"` |  |
@@ -49,6 +50,7 @@ Kubernetes: `>= 1.30.0-0`
 | csi.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for csi image. if tag is "latest", set to "Always" |
 | csi.image.registry | string | `"quay.io"` | image registry to use for csi image |
 | csi.image.repository | string | `"openbao/openbao-csi-provider"` | image repo to use for csi image |
+| csi.image.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | csi.image.tag | string | `"2.0.3"` | image tag to use for csi image |
 | csi.livenessProbe.failureThreshold | int | `2` |  |
 | csi.livenessProbe.initialDelaySeconds | int | `5` |  |
@@ -76,6 +78,7 @@ Kubernetes: `>= 1.30.0-0`
 | global.externalBaoAddr | string | `""` | External openbao server address for the injector and CSI provider to use. Setting this will disable deployment of an OpenBao server. |
 | global.externalVaultAddr | string | `""` | Deprecated: Please use global.externalBaoAddr instead. |
 | global.imagePullSecrets | list | `[]` | Image pull secret to use for registry authentication. Alternatively, the value may be specified as an array of strings. |
+| global.imageRegistry | string | `""` | Registry prefix for chart images and map-valued extra container images, overriding per-image registries. May include a mirror project path. |
 | global.namespace | string | `""` | The namespace to deploy to. Defaults to the `helm` installation namespace. |
 | global.openshift | bool | `false` | If deploying to OpenShift |
 | global.serverTelemetry.prometheusOperator | bool | `false` | Enable integration with the Prometheus Operator See the top level serverTelemetry section below before enabling this feature. |
@@ -88,10 +91,11 @@ Kubernetes: `>= 1.30.0-0`
 | injector.agentDefaults.template | string | `"map"` |  |
 | injector.agentDefaults.templateConfig.exitOnRetryFailure | bool | `true` |  |
 | injector.agentDefaults.templateConfig.staticSecretRenderInterval | string | `""` |  |
-| injector.agentImage | object | `{"pullPolicy":"IfNotPresent","registry":"quay.io","repository":"openbao/openbao","tag":""}` | agentImage sets the repo and tag of the OpenBao image to use for the OpenBao Agent containers.  This should be set to the official OpenBao image.  OpenBao 1.3.1+ is required. |
+| injector.agentImage | object | `{"pullPolicy":"IfNotPresent","registry":"quay.io","repository":"openbao/openbao","sha":"","tag":""}` | agentImage sets the repo and tag of the OpenBao image to use for the OpenBao Agent containers.  This should be set to the official OpenBao image.  OpenBao 1.3.1+ is required. |
 | injector.agentImage.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for agent image. if tag is "latest", set to "Always" |
 | injector.agentImage.registry | string | `"quay.io"` | image registry to use for agent image |
 | injector.agentImage.repository | string | `"openbao/openbao"` | image repo to use for agent image |
+| injector.agentImage.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | injector.agentImage.tag | string | `""` | image tag to use for agent image - defaults to chart appVersion |
 | injector.annotations | object | `{}` |  |
 | injector.authPath | string | `"auth/kubernetes"` |  |
@@ -109,6 +113,7 @@ Kubernetes: `>= 1.30.0-0`
 | injector.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for k8s image. if tag is "latest", set to "Always" |
 | injector.image.registry | string | `"docker.io"` | image registry to use for k8s image |
 | injector.image.repository | string | `"hashicorp/vault-k8s"` | image repo to use for k8s image |
+| injector.image.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | injector.image.tag | string | `"1.7.6"` | image tag to use for k8s image |
 | injector.leaderElector | object | `{"enabled":true}` | If multiple replicas are specified, by default a leader will be determined so that only one injector attempts to create TLS certificates. |
 | injector.livenessProbe.failureThreshold | int | `2` | When a probe fails, Kubernetes will try failureThreshold times before giving up |
@@ -224,6 +229,7 @@ Kubernetes: `>= 1.30.0-0`
 | server.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for server image. if tag is "latest", set to "Always" |
 | server.image.registry | string | `"quay.io"` | image registry to use for server image |
 | server.image.repository | string | `"openbao/openbao"` | image repo to use for server image |
+| server.image.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | server.image.tag | string | `""` | image tag to use for server image - defaults to chart appVersion |
 | server.ingress.activeService | bool | `true` |  |
 | server.ingress.annotations | object | `{}` |  |
@@ -351,7 +357,10 @@ Kubernetes: `>= 1.30.0-0`
 | snapshotAgent.extraSecretEnvironmentVars | list | `[]` | List of extra environment variables to set in the snapshot-agent cronjob These variables take value from existing Secret objects. |
 | snapshotAgent.extraVolumeMounts | list | `[]` | List of additional volumeMounts for the snapshot cronjob container. |
 | snapshotAgent.extraVolumes | list | `[]` | List of extraVolumes made available to the snapshot cronjob container. |
+| snapshotAgent.image.pullPolicy | string | `"IfNotPresent"` | image pull policy to use for the snapshot agent |
+| snapshotAgent.image.registry | string | `""` | Optional registry override. Empty preserves the registry in repository. |
 | snapshotAgent.image.repository | string | `"ghcr.io/openbao/openbao-snapshot-agent"` |  |
+| snapshotAgent.image.sha | string | `""` | image digest. When set, the reference is repository:tag@sha |
 | snapshotAgent.image.tag | string | `"0.4.5"` |  |
 | snapshotAgent.job.annotations | object | `{}` |  |
 | snapshotAgent.job.extraLabels | object | `{}` |  |
