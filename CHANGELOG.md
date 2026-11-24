@@ -1,5 +1,7 @@
 ## Unreleased
 
+- feat(server): support additional per-pod persistent volume claim templates.
+
 ## 0.30.7
 
 - feat: Add trafficDistribution support to all services
